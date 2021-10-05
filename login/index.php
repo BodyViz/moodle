@@ -82,7 +82,7 @@ if (!empty($SESSION->has_timed_out)) {
 $frm  = false;
 $user = false;
 
-$authsequence = get_enabled_auth_plugins(); // Auths, in sequence.
+$authsequence = get_enabled_auth_plugins(true); // auths, in sequence
 foreach($authsequence as $authname) {
     $authplugin = get_auth_plugin($authname);
     // The auth plugin's loginpage_hook() can eventually set $frm and/or $user.
@@ -310,8 +310,11 @@ if (empty($SESSION->wantsurl)) {
 
 /// Redirect to alternative login URL if needed
 if (!empty($CFG->alternateloginurl)) {
-    $loginurl = new moodle_url($CFG->alternateloginurl);
-
+    
+    //remove to go back to old
+	$sessionkey =sesskey();
+    $loginurl = new moodle_url($CFG->alternateloginurl . $sessionkey);
+    //    $loginurl = new moodle_url($CFG->alternateloginurl);
     $loginurlstr = $loginurl->out(false);
 
     if (strpos($SESSION->wantsurl, $loginurlstr) === 0) {

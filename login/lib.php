@@ -182,6 +182,38 @@ function core_login_process_password_reset($username, $email) {
         // Print general (non-commital) message.
         $status = 'emailpasswordconfirmmaybesent';
         $notice = get_string($status);
+
+/******************************************/
+//EXECUTE PASSWORD RESET VIA EMAIL
+function PostResetPassword($url, $body){
+	$headers = array(
+		"Content-Type: application/vnd.api+json",
+		"Accept: application/vnd.api+json");
+	$request = curl_init($url);
+	curl_setopt($request, CURLOPT_HEADER, 0);
+	curl_setopt($request, CURLOPT_ENCODING, "");
+	curl_setopt($request, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($body));
+	curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
+	curl_setopt($request, CURLOPT_HTTPHEADER, $headers);
+	$response = curl_exec($request);
+	$info = curl_getinfo($request);
+
+	curl_close($request);
+	
+	return $info["http_code"];
+}
+
+//reset email
+	$reset_meta = array("email" => $email, "deliver" => true);
+	$reset_data = array("meta" => $reset_meta);
+
+$base_url = "https://api.keygen.sh/v1/accounts/bc685b94-3d7f-4efc-99e4-85e12157d0a9/passwords";
+
+	$resetcall = PostResetPassword($base_url, $reset_data);
+
+/******************************************/     
+
     } else if (empty($user)) {
         // Protect usernames is off, and we couldn't find the user with details specified.
         // Print failure advice.
@@ -387,9 +419,7 @@ function core_login_validate_forgot_password_data($data) {
                 $user = get_complete_user_data('email', $data['email'], null, true);
                 if (empty($user->confirmed)) {
                     send_confirmation_email($user);
-                    if (empty($CFG->protectusernames)) {
-                        $errors['email'] = get_string('confirmednot');
-                    }
+                    $errors['email'] = get_string('confirmednot');
                 }
             } catch (dml_missing_record_exception $missingexception) {
                 // User not found. Show error when $CFG->protectusernames is turned off.
@@ -398,9 +428,7 @@ function core_login_validate_forgot_password_data($data) {
                 }
             } catch (dml_multiple_records_exception $multipleexception) {
                 // Multiple records found. Ask the user to enter a username instead.
-                if (empty($CFG->protectusernames)) {
-                    $errors['email'] = get_string('forgottenduplicate');
-                }
+                $errors['email'] = get_string('forgottenduplicate');
             }
         }
 
@@ -408,9 +436,7 @@ function core_login_validate_forgot_password_data($data) {
         if ($user = get_complete_user_data('username', $data['username'])) {
             if (empty($user->confirmed)) {
                 send_confirmation_email($user);
-                if (empty($CFG->protectusernames)) {
-                    $errors['username'] = get_string('confirmednot');
-                }
+                $errors['email'] = get_string('confirmednot');
             }
         }
         if (!$user and empty($CFG->protectusernames)) {

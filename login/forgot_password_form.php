@@ -49,7 +49,7 @@ class login_forgot_password_form extends moodleform {
 
         // Hook for plugins to extend form definition.
         core_login_extend_forgot_password_form($mform);
-
+/*
         $mform->addElement('header', 'searchbyusername', get_string('searchbyusername'), '');
 
         $purpose = user_edit_map_field_purpose($USER->id, 'username');
@@ -58,14 +58,14 @@ class login_forgot_password_form extends moodleform {
 
         $submitlabel = get_string('search');
         $mform->addElement('submit', 'submitbuttonusername', $submitlabel);
-
+*/
         $mform->addElement('header', 'searchbyemail', get_string('searchbyemail'), '');
 
         $purpose = user_edit_map_field_purpose($USER->id, 'email');
         $mform->addElement('text', 'email', get_string('email'), 'maxlength="100" size="30"' . $purpose);
         $mform->setType('email', PARAM_RAW_TRIMMED);
 
-        $submitlabel = get_string('search');
+        $submitlabel = get_string('submit');
         $mform->addElement('submit', 'submitbuttonemail', $submitlabel);
     }
 
