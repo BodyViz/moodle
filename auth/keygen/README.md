@@ -1,8 +1,10 @@
 # Keygen #
 
-TODO Describe the plugin shortly here.
+Uses the Keygen.sh authentication and licensing system to handle authentication into moodle.
 
-TODO Provide more detailed description here.
+This plugin handles authentication for users within the KeyGen licensing system. Where the plugin checks if the user exists in the database and whether they have a vlid license that matches the product we are looking for here.
+
+It should also handle generating generic users within Moodle and populating their name and email information for continued use.
 
 ## Installing via uploaded ZIP file ##
 
