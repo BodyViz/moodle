@@ -259,6 +259,7 @@ class api {
         $user->lastname = isset($userinfo['lastname']) ? $userinfo['lastname'] : '';
         $user->firstname = isset($userinfo['firstname']) ? $userinfo['firstname'] : '';
         $user->alternatename = isset($userinfo['alternatename']) ? $userinfo['alternatename'] : '';
+        $user->institution = isset($userinfo['institution']) ? $userinfo['institution'] : ''; //custom code to add institution filed on creation of account.
         $user->secret = random_string(15);
 
         $user->password = '';
@@ -307,6 +308,7 @@ class api {
         $user->lastname = isset($userinfo['lastname']) ? $userinfo['lastname'] : '';
         $user->firstname = isset($userinfo['firstname']) ? $userinfo['firstname'] : '';
         $user->alternatename = isset($userinfo['alternatename']) ? $userinfo['alternatename'] : '';
+        $user->institution = isset($userinfo['institution']) ? $userinfo['institution'] : ''; //custom code to add institution filed on creation of account.
         $user->secret = random_string(15);
 
         $user->password = '';
